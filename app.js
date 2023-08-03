@@ -18,6 +18,7 @@ ctx.lineWidth = lineWidth.value;
 
 let isPainting = false;
 let isFilling = false;
+let fillColor = "";
 
 function onMove(event) {
   if (isPainting) {
@@ -42,21 +43,23 @@ function onLineWidthChange(event) {
 }
 
 function onColorChange(event) {
-  ctx.strokeStyle = ctx.fillStyle = event.target.value;
+  ctx.strokeStyle = ctx.fillStyle = fillColor = event.target.value;
 }
 
 function onColorClick(event) {
   const colorValue = event.target.dataset.color;
-  ctx.strokeStyle = ctx.fillStyle = color.value = colorValue;
+  ctx.strokeStyle = ctx.fillStyle = color.value = fillColor = colorValue;
 }
 
 function onModeClick() {
   if (isFilling) {
     isFilling = false;
     modeBtn.innerText = "Fill";
+    ctx.strokeStyle = fillColor;
   } else {
     isFilling = true;
     modeBtn.innerText = "Draw";
+    ctx.fillStyle = fillColor;
   }
 }
 
@@ -69,6 +72,8 @@ function onCanvasClick() {
 function onDestroyClick() {
   ctx.fillStyle = "#ffffff";
   ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+  isFilling = false;
+  modeBtn.innerText = "Fill";
 }
 
 function onEraseClick() {
